@@ -66,7 +66,7 @@ def bool_array(arr:np.array) -> np.array:
 
 # %%
 def invert_bool_array(arr:np.array) -> np.array:
-    return np.where(arr==1,False,True)    
+    return np.where(arr==0,True,False)   
 
 # %%
 # Készíts egy olyan függvényt ami a paraméterként kapott array-t kilapítja
