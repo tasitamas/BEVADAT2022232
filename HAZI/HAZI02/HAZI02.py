@@ -29,7 +29,8 @@ def column_swap(arr:np.array) -> np.array:
 
 # %%
 def compare_two_array(arr:np.array, arr2:np.array) -> np.array:
-    return np.where(arr == arr2)[0]
+    equal_elements = np.where(arr == arr2)[0]
+    return list(equal_elements)
 
 # %%
 # Készíts egy olyan függvényt, ami vissza adja string-ként a megadott array dimenzióit:
@@ -40,12 +41,11 @@ def compare_two_array(arr:np.array, arr2:np.array) -> np.array:
 
 # %%
 def get_array_shape(arr:np.array) -> str:
-    shape = arr.shape
-    dim = len(shape)
-    if dim > 0 & dim <= 3:
-        return "sor: {}, oszlop {}, melyseg: {}".format(shape[0],shape[1],shape[2])
-    else:
-        return "Nagyobb dimenzió, mint 3D"
+    ndim = arr.ndim
+    if ndim > 3:
+        return "Túl magas dimenziójú tömb"
+    shape = f"sor: {arr.shape[0] if ndim >= 1 else 0}, oszlop: {arr.shape[1] if ndim >= 2 else 0}, melyseg: {arr.shape[2] if ndim == 3 else 1}"
+    return shape
 
 # %%
 # Készíts egy olyan függvényt, aminek segítségével elő tudod állítani egy neurális hálózat tanításához szükséges pred-et egy numpy array-ből. 
@@ -154,10 +154,18 @@ def add_border(arr:np.array) -> np.array:
 
 # %%
 def list_days(start:str,end:str) -> list:
-    start = datetime.strptime(start, '%Y-%m-%d')
-    end = datetime.strptime(end, '%Y-%m-%d')
-    days = np.arange(start, end + timedelta(days=1), timedelta(days=1)).astype(datetime)
-    return [day.strftime('%Y-%m-%d') for day in days]
+    if len(start) == 7:
+        start = datetime.strptime(start,'%Y-%m')
+    else:
+        start = datetime.strptime(start,'%Y-%m-%d')
+
+    if len(end) == 7:
+        end = datetime.strptime(end,'%Y-%m')
+    else:
+        end = datetime.strptime(end,'%Y-%m-%d')
+    
+    result = [start + timedelta(days=i) for i in range((end-start).days) if start + timedelta(days=i) < end]
+    return [d.strftime('%Y-%m-%d') for d in result]
 
 # %%
 # Írj egy fügvényt ami vissza adja az aktuális dátumot az alábbi formában: YYYY-MM-DD. Térjen vissza egy 'numpy.datetime64' típussal.
@@ -178,9 +186,7 @@ def get_act_date() -> np.datetime64:
 
 # %%
 def sec_from_1970() -> int:
-    start = np.datetime64('1970-01-01T00:02:00')
-    current = np.datetime64('now')
-    secs = (current - start) / np.timedelta64(1,'s')
-    return int(secs)
+    return int((np.datetime64('now') - np.datetime64('1970-01-01T00:02:00')) / np.timedelta64(1,'s'))
+
 
 
