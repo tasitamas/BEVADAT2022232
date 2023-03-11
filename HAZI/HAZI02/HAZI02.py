@@ -29,8 +29,7 @@ def column_swap(arr:np.array) -> np.array:
 
 # %%
 def compare_two_array(arr:np.array, arr2:np.array) -> np.array:
-    equal_elements = np.where(arr == arr2)[0]
-    return list(equal_elements)
+    return np.where(np.equal(arr,arr2))
 
 # %%
 # Készíts egy olyan függvényt, ami vissza adja string-ként a megadott array dimenzióit:
